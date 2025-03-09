@@ -6,7 +6,7 @@ from tkinter import filedialog
 
 # Constants
 SORTED_PARENT_FOLDER = "Sorted"
-KEYWORDS_FILE = "keywords.txt"
+KEYWORDS_FILE = "keywords (place your keywords here).txt"  # Updated filename to match your file
 
 # Load keywords from file
 def load_keywords():
@@ -15,13 +15,15 @@ def load_keywords():
         with open(KEYWORDS_FILE, "r", encoding="utf-8") as f:
             for line in f:
                 line = line.strip()
-                if not line or line.startswith("#"):  # Ignore empty lines and comments
+                if not line or line.startswith("Insert") or "DESIRED KEYWORDS" in line:  # Skip instruction lines
                     continue
-                parts = line.split(":")
-                if len(parts) == 2:
-                    keys, folder = parts
-                    for key in keys.split("/"):
-                        keywords[key.lower()] = folder
+                
+                if ":" in line:  # Check if this is a keyword definition line
+                    parts = line.split(":", 1)  # Split by first colon
+                    if len(parts) == 2:
+                        keys, folder = parts[0].strip(), parts[1].strip()
+                        for key in keys.split("/"):  # Handle multiple keywords separated by "/"
+                            keywords[key.strip().lower()] = folder
     return keywords
 
 # Generate sorted folder name
@@ -39,6 +41,11 @@ def sort_files(input_folder):
     keywords = load_keywords()
     sorted_folder = get_sorted_folder()
     ensure_folder(sorted_folder)
+    
+    # Print loaded keywords for debugging
+    print("Loaded keywords:")
+    for k, v in keywords.items():
+        print(f"  '{k}' -> '{v}'")
     
     for filename in os.listdir(input_folder):
         file_path = os.path.join(input_folder, filename)
@@ -72,6 +79,10 @@ def create_gui():
     
     browse_button = tk.Button(root, text="Browse Folder", command=open_folder_dialog)
     browse_button.pack(pady=10)
+    
+    # Add status label
+    status_label = tk.Label(root, text=f"Keywords file: {KEYWORDS_FILE}", font=("Arial", 10))
+    status_label.pack(pady=10)
     
     root.mainloop()
 
