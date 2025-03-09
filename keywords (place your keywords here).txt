@@ -1,0 +1,13 @@
+Insert your keywords here.
+DESIRED KEYWORDS : DESIRED DESTINATION FOLDER NAME.
+
+ck: Cooking
+co: Checkout
+fa: Fashion
+bon/bonmot/bm: Bon Mot
+ai: AI
+w: Written
+copy: Copywriting
+mkt: Marketing
+$: Business
+x/xx/xxx/xxxx/xxxxx: X-Files
